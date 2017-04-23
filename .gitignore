@@ -31,3 +31,8 @@
 # Debug files
 *.dSYM/
 *.su
+
+/DebugConfig
+/Listings
+/Objects
+/*.uvguix*
