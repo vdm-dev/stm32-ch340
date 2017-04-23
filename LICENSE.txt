@@ -1,6 +1,6 @@
-MIT License
+The MIT License (MIT)
 
-Copyright (c) 2017 VDm
+Copyright (c) 2017 Dmitry Lavygin (vdm.inbox@gmail.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +19,19 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+------------------------------------------------------------------------------
+
+This project contains following third-party open source software:
+
+1) The Cortex Microcontroller Software Interface Standard (CMSIS)
+   URL: https://github.com/ARM-software/CMSIS
+   License: Apache 2.0 License (http://www.apache.org/licenses/LICENSE-2.0)
+   
+2) STM32F10x Standard Peripherals Library Drivers
+   URL: http://www.st.com/en/embedded-software/stsw-stm32054.html
+   License: MCD-ST Liberty SW License Agreement V2 (http://www.st.com/software_license_agreement_liberty_v2)
+   
+3) STM32F10x, STM32L1xx and STM32F3xx USB-FS-Device Driver
+   URL: http://www.st.com/en/embedded-software/stsw-stm32121.html
+   License: MCD-ST Liberty SW License Agreement V2 (http://www.st.com/software_license_agreement_liberty_v2)
