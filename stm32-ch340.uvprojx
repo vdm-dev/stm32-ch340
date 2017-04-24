@@ -409,6 +409,11 @@
               <FileType>5</FileType>
               <FilePath>.\stm32_it.h</FilePath>
             </File>
+            <File>
+              <FileName>retarget.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\retarget.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
