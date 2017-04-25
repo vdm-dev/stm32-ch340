@@ -26,7 +26,6 @@
   */
 
 
-/* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __HW_CONFIG_H
 #define __HW_CONFIG_H
 
@@ -45,11 +44,10 @@
 
 #define USART_RX_DATA_SIZE   2048
 /* Exported functions ------------------------------------------------------- */
-void Set_System(void);
-void Set_USBClock(void);
+void configureUsbSystem(void);
 void Enter_LowPowerMode(void);
 void Leave_LowPowerMode(void);
-void USB_Interrupts_Config(void);
+void configureUsbInterrupts(void);
 void USB_Cable_Config (FunctionalState NewState);
 void USART_Config_Default(void);
 bool USART_Config(void);

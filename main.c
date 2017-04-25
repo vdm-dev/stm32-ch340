@@ -29,9 +29,9 @@
 
 int main(void)
 {
-    Set_System();
-    Set_USBClock();
-    USB_Interrupts_Config();
+    configureUsbSystem();
+    configureUsbInterrupts();
+    
     USB_Init();
 
     USART_Config_Default();	
