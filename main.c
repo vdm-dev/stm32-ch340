@@ -34,8 +34,6 @@ int main(void)
     
     USB_Init();
 
-    USART_Config_Default();	
-
     while (1)
     {
     }

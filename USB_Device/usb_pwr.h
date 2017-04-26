@@ -60,6 +60,7 @@ typedef enum _DEVICE_STATE
 void Suspend(void);
 void Resume_Init(void);
 void Resume(RESUME_STATE eResumeSetVal);
+
 RESULT PowerOn(void);
 RESULT PowerOff(void);
 

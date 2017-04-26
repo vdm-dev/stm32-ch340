@@ -65,8 +65,8 @@ typedef struct
 #define SEND_BREAK                  0x23
 
 /* Exported functions ------------------------------------------------------- */
-void Virtual_Com_Port_init(void);
-void Virtual_Com_Port_Reset(void);
+void vcpInit(void);
+void vcpReset(void);
 void Virtual_Com_Port_SetConfiguration(void);
 void Virtual_Com_Port_SetDeviceAddress (void);
 void Virtual_Com_Port_Status_In (void);

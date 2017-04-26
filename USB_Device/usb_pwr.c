@@ -49,11 +49,6 @@ ResumeS;
 
 __IO uint32_t remotewakeupon=0;
 
-/* Extern variables ----------------------------------------------------------*/
-/* Private function prototypes -----------------------------------------------*/
-/* Extern function prototypes ------------------------------------------------*/
-/* Private functions ---------------------------------------------------------*/
-
 /*******************************************************************************
 * Function Name  : PowerOn
 * Description    :
@@ -66,7 +61,7 @@ RESULT PowerOn(void)
   uint16_t wRegVal;
 
   /*** cable plugged-in ? ***/
-  USB_Cable_Config(ENABLE);
+  configureUsbCable(ENABLE);
 
   /*** CNTR_PWDN = 0 ***/
   wRegVal = CNTR_FRES;
@@ -98,7 +93,7 @@ RESULT PowerOff()
   /* clear interrupt status register */
   _SetISTR(0);
   /* Disable the Pull-Up*/
-  USB_Cable_Config(DISABLE);
+  configureUsbCable(DISABLE);
   /* switch-off device */
   _SetCNTR(CNTR_FRES + CNTR_PDWN);
   /* sw variables reset */

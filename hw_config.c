@@ -168,7 +168,7 @@ void configureUsbInterrupts(void)
 {
     NVIC_InitTypeDef NVIC_InitStructure; 
 
-    /* 2 bit for pre-emption priority, 2 bits for subpriority */
+    // 2 bit for pre-emption priority, 2 bits for subpriority
     NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);  
 
     NVIC_InitStructure.NVIC_IRQChannel = USB_LP_CAN1_RX0_IRQn;
@@ -177,37 +177,21 @@ void configureUsbInterrupts(void)
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
 
-    /* Enable the USB Wake-up interrupt */
+    // Enable the USB Wake-up interrupt
     NVIC_InitStructure.NVIC_IRQChannel = USBWakeUp_IRQn;
     NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
     NVIC_Init(&NVIC_InitStructure);
 
-    /* Enable USART Interrupt */
+    // Enable USART Interrupt
     NVIC_InitStructure.NVIC_IRQChannel = EVAL_COM1_IRQn;
     NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
     NVIC_Init(&NVIC_InitStructure);
 }
 
-/*******************************************************************************
-* Function Name  : USB_Cable_Config
-* Description    : Software Connection/Disconnection of USB Cable
-* Input          : None.
-* Return         : Status
-*******************************************************************************/
-void USB_Cable_Config (FunctionalState NewState)
+void configureUsbCable(FunctionalState state)
 {
-#if defined(STM32L1XX_MD) || defined (STM32L1XX_HD)|| (STM32L1XX_MD_PLUS)
-  if (NewState != DISABLE)
-  {
-    STM32L15_USB_CONNECT;
-  }
-  else
-  {
-    STM32L15_USB_DISCONNECT;
-  }  
-  
-#elif !defined(USE_STM32_NO_EVAL)
-  if (NewState != DISABLE)
+#if !defined(USE_STM32_NO_EVAL)
+  if (state != DISABLE)
   {
     GPIO_ResetBits(USB_DISCONNECT, USB_DISCONNECT_PIN);
   }
@@ -219,12 +203,12 @@ void USB_Cable_Config (FunctionalState NewState)
 }
 
 /*******************************************************************************
-* Function Name  :  USART_Config_Default.
+* Function Name  :  setUsartDefaultSettings.
 * Description    :  configure the EVAL_COM1 with default values.
 * Input          :  None.
 * Return         :  None.
 *******************************************************************************/
-void USART_Config_Default(void)
+void setUsartDefaultSettings(void)
 {
   /* EVAL_COM1 default configuration */
   /* EVAL_COM1 configured as follow:
@@ -249,14 +233,6 @@ void USART_Config_Default(void)
   USART_ITConfig(EVAL_COM1, USART_IT_RXNE, ENABLE);
 }
 
-/*******************************************************************************
-* Function Name  :  USART_Config.
-* Description    :  Configure the EVAL_COM1 according to the line coding structure.
-* Input          :  None.
-* Return         :  Configuration status
-                    TRUE : configuration done with success
-                    FALSE : configuration aborted.
-*******************************************************************************/
 bool USART_Config(void)
 {
 
@@ -274,7 +250,7 @@ bool USART_Config(void)
       break;
     default :
     {
-      USART_Config_Default();
+      setUsartDefaultSettings();
       return (FALSE);
     }
   }
@@ -293,7 +269,7 @@ bool USART_Config(void)
       break;
     default :
     {
-      USART_Config_Default();
+      setUsartDefaultSettings();
       return (FALSE);
     }
   }
@@ -318,7 +294,7 @@ bool USART_Config(void)
       break;
     default :
     {
-      USART_Config_Default();
+      setUsartDefaultSettings();
       return (FALSE);
     }
   }

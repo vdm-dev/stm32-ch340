@@ -26,7 +26,6 @@
   */
 
 
-/* Includes ------------------------------------------------------------------*/
 #include "usb_lib.h"
 #include "usb_conf.h"
 #include "usb_prop.h"
@@ -36,10 +35,6 @@
 
 #include "stdio.h"
 
-/* Private typedef -----------------------------------------------------------*/
-/* Private define ------------------------------------------------------------*/
-/* Private macro -------------------------------------------------------------*/
-/* Private variables ---------------------------------------------------------*/
 LINE_CODING linecoding =
   {
     115200, /* baud rate*/
@@ -48,9 +43,6 @@ LINE_CODING linecoding =
     0x08    /* no. of bits 8*/
   };
 
-/* -------------------------------------------------------------------------- */
-/*  Structures initializations */
-/* -------------------------------------------------------------------------- */
 
 DEVICE Device_Table =
   {
@@ -60,8 +52,8 @@ DEVICE Device_Table =
 
 DEVICE_PROP Device_Property =
   {
-    Virtual_Com_Port_init,
-    Virtual_Com_Port_Reset,
+    vcpInit,
+    vcpReset,
     Virtual_Com_Port_Status_In,
     Virtual_Com_Port_Status_Out,
     Virtual_Com_Port_Data_Setup,
@@ -184,32 +176,30 @@ void vcpSetMode(uint8_t mode)
 }
 
 
-void Virtual_Com_Port_init(void)
+void vcpInit(void)
 {
-    /* Update the serial number string descriptor with the data from the unique
-     ID*/
+    // Update the serial number string descriptor with the data from the unique ID
     Get_SerialNum();
 
     pInformation->Current_Configuration = 0;
 
-    /* Connect the device */
+    // Connect the device
     PowerOn();
 
-    /* Perform basic device initialization operations */
+    // Perform basic device initialization operations
     USB_SIL_Init();
 
-    /* configure the USART to the default settings */
-    USART_Config_Default();
+    setUsartDefaultSettings();
 
     bDeviceState = UNCONNECTED;
 }
 
-void Virtual_Com_Port_Reset(void)
+void vcpReset(void)
 {
-    /* Set Virtual_Com_Port DEVICE as not configured */
+    // Set Virtual_Com_Port DEVICE as not configured
     pInformation->Current_Configuration = 0;
 
-    /* Current Feature initialization */
+    // Current Feature initialization
     pInformation->Current_Feature = Virtual_Com_Port_ConfigDescriptor[7];
 
     /* Set Virtual_Com_Port DEVICE with the default Interface*/
@@ -331,7 +321,7 @@ RESULT Virtual_Com_Port_NoData_Setup(uint8_t request)
     {
         if (pInformation->USBwValues.w == CH341_COMMAND_SET_BAUD)
         {
-            vcpSetBaud(pInformation->USBwIndexs.bw.bb1, pInformation->USBwIndexs.bw.bb0 & 0x03);
+            vcpSetBaud(pInformation->USBwIndexs.bw.bb1, pInformation->USBwIndexs.bw.bb0);
         }
         else if (pInformation->USBwValues.w == CH341_COMMAND_SET_MODE)
         {
