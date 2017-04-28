@@ -49,18 +49,11 @@ ResumeS;
 
 __IO uint32_t remotewakeupon=0;
 
-/*******************************************************************************
-* Function Name  : PowerOn
-* Description    :
-* Input          : None.
-* Output         : None.
-* Return         : USB_SUCCESS.
-*******************************************************************************/
+
 RESULT PowerOn(void)
 {
   uint16_t wRegVal;
 
-  /*** cable plugged-in ? ***/
   configureUsbCable(ENABLE);
 
   /*** CNTR_PWDN = 0 ***/
@@ -79,13 +72,6 @@ RESULT PowerOn(void)
   return USB_SUCCESS;
 }
 
-/*******************************************************************************
-* Function Name  : PowerOff
-* Description    : handles switch-off conditions
-* Input          : None.
-* Output         : None.
-* Return         : USB_SUCCESS.
-*******************************************************************************/
 RESULT PowerOff()
 {
   /* disable all interrupts and force USB reset */

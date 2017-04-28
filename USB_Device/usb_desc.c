@@ -131,11 +131,9 @@ const uint8_t Virtual_Com_Port_StringProduct[VIRTUAL_COM_PORT_SIZ_STRING_PRODUCT
     'M', 0, ' ', 0, 'P', 0, 'o', 0, 'r', 0, 't', 0, ' ', 0, ' ', 0
   };
 
-uint8_t Virtual_Com_Port_StringSerial[VIRTUAL_COM_PORT_SIZ_STRING_SERIAL] =
-  {
-    VIRTUAL_COM_PORT_SIZ_STRING_SERIAL,           /* bLength */
-    USB_STRING_DESCRIPTOR_TYPE,                   /* bDescriptorType */
+uint8_t vcpStringSerial[VCP_STRING_SERIAL_SIZE] =
+{
+    VCP_STRING_SERIAL_SIZE,     // bLength
+    USB_STRING_DESCRIPTOR_TYPE, // bDescriptorType
     'S', 0, 'T', 0, 'M', 0, '3', 0, '2', 0
-  };
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+};

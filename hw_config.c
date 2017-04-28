@@ -26,8 +26,6 @@
   */
 
 
-/* Includes ------------------------------------------------------------------*/
-
 #include "stm32_it.h"
 #include "usb_lib.h"
 #include "usb_prop.h"
@@ -36,11 +34,6 @@
 #include "usb_pwr.h"
 
 
-/* Private typedef -----------------------------------------------------------*/
-/* Private define ------------------------------------------------------------*/
-/* Private macro -------------------------------------------------------------*/
-/* Private variables ---------------------------------------------------------*/
-//ErrorStatus HSEStartUpStatus;
 USART_InitTypeDef USART_InitStructure;
 EXTI_InitTypeDef EXTI_InitStructure;
 uint8_t  USART_Rx_Buffer [USART_RX_DATA_SIZE]; 
@@ -49,8 +42,6 @@ uint32_t USART_Rx_ptr_out = 0;
 uint32_t USART_Rx_length  = 0;
 
 uint8_t  USB_Tx_State = 0;
-static void IntToUnicode (uint32_t value , uint8_t *pbuf , uint8_t len);
-/* Extern variables ----------------------------------------------------------*/
 
 extern LINE_CODING linecoding;
 
@@ -79,16 +70,28 @@ const uint16_t COM_TX_PIN[COMn] = {EVAL_COM1_TX_PIN, EVAL_COM1_TX_PIN};
 
 const uint16_t COM_RX_PIN[COMn] = {EVAL_COM1_RX_PIN, EVAL_COM1_RX_PIN};
 
-/**
-  * @brief  Configures COM port.
-  * @param  COM: Specifies the COM port to be configured.
-  *   This parameter can be one of following parameters:
-  *     @arg COM1
-  *     @arg COM2
-  * @param  USART_InitStruct: pointer to a USART_InitTypeDef structure that
-  *   contains the configuration information for the specified USART peripheral.
-  * @retval None
-  */
+
+static void intToUnicode(uint32_t value, uint8_t *buffer, uint8_t length)
+{
+    uint8_t i = 0;
+
+    for (i = 0; i < length; i++)
+    {
+        if ((value >> 28) < 10)
+        {
+            buffer[i << 1] = (value >> 28) + '0';
+        }
+        else
+        {
+            buffer[i << 1] = (value >> 28) + 'A' - 10; 
+        }
+
+        value = value << 4;
+
+        buffer[(i << 1) + 1] = 0;
+    }
+}
+
 void STM_EVAL_COMInit(COM_TypeDef COM, USART_InitTypeDef* USART_InitStruct)
 {
 	if (COM != COM1)
@@ -385,12 +388,7 @@ void Handle_USBAsynchXfer (void)
   }  
   
 }
-/*******************************************************************************
-* Function Name  : UART_To_USB_Send_Data.
-* Description    : send the received data from UART 0 to USB.
-* Input          : None.
-* Return         : none.
-*******************************************************************************/
+
 void USART_To_USB_Send_Data(void)
 {
 	//USART_ReceiveData(EVAL_COM1); return;
@@ -413,56 +411,19 @@ void USART_To_USB_Send_Data(void)
   }
 }
 
-/*******************************************************************************
-* Function Name  : Get_SerialNum.
-* Description    : Create the serial number string descriptor.
-* Input          : None.
-* Output         : None.
-* Return         : None.
-*******************************************************************************/
-void Get_SerialNum(void)
+void fillSerialNumber(void)
 {
-  uint32_t Device_Serial0, Device_Serial1, Device_Serial2;
+    uint32_t serialNumber0, serialNumber1, serialNumber2;
 
-  Device_Serial0 = *(uint32_t*)ID1;
-  Device_Serial1 = *(uint32_t*)ID2;
-  Device_Serial2 = *(uint32_t*)ID3;  
+    serialNumber0 = *(uint32_t*) ID1;
+    serialNumber1 = *(uint32_t*) ID2;
+    serialNumber2 = *(uint32_t*) ID3;  
 
-  Device_Serial0 += Device_Serial2;
+    serialNumber0 += serialNumber2;
 
-  if (Device_Serial0 != 0)
-  {
-    IntToUnicode (Device_Serial0, &Virtual_Com_Port_StringSerial[2] , 8);
-    IntToUnicode (Device_Serial1, &Virtual_Com_Port_StringSerial[18], 4);
-  }
-}
-
-/*******************************************************************************
-* Function Name  : HexToChar.
-* Description    : Convert Hex 32Bits value into char.
-* Input          : None.
-* Output         : None.
-* Return         : None.
-*******************************************************************************/
-static void IntToUnicode (uint32_t value , uint8_t *pbuf , uint8_t len)
-{
-  uint8_t idx = 0;
-  
-  for( idx = 0 ; idx < len ; idx ++)
-  {
-    if( ((value >> 28)) < 0xA )
+    if (serialNumber0 != 0)
     {
-      pbuf[ 2* idx] = (value >> 28) + '0';
+        intToUnicode(serialNumber0, &vcpStringSerial[2], 8);
+        intToUnicode(serialNumber1, &vcpStringSerial[18], 4);
     }
-    else
-    {
-      pbuf[2* idx] = (value >> 28) + 'A' - 10; 
-    }
-    
-    value = value << 4;
-    
-    pbuf[ 2* idx + 1] = 0;
-  }
 }
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
